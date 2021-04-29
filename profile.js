@@ -353,7 +353,7 @@ function loadScoresPage(type, mode) {
 		r.scores.forEach(function(v, idx){
 			scoreStore[v.id] = v;
 			var scoreRank = getRank(mode, v.mods, v.accuracy, v.count_300, v.count_100, v.count_50, v.count_miss);
-			var scoreRankIcon = "<img src='https://cdn.troke.id/static/ranking-icons/" + scoreRank + ".svg' class='score rank' alt='" + scoreRank + "'> ";
+			var scoreRankIcon = "<img src='https://cdn.troke.id/static/ranking-icons/" + scoreRank + ".png' class='score rank' alt='" + scoreRank + "'> ";
 			var rowColor = '';
 			//CREDIT USSR.PL (RealistikOsu)
 			if (v.completed < 2){

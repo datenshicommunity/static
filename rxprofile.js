@@ -302,8 +302,9 @@ function initRecentActivity(el, mode) {
 function loadRecentActivity(type, mode) {
     var table = $("#recent-activity div[data-mode=" + mode + "] table[data-type=" + type + "] tbody");
     api("users/get_activity", {
-        mode: mode,
         userid: userID,
+		mode: mode,
+		spmode: 1,
     }, function (r) {
         if(!r.logs) {
         	return;
@@ -313,7 +314,7 @@ function loadRecentActivity(type, mode) {
             table.append($("<tr class='new score-row'/>").append(
                 $(
                     "<td style='background: linear-gradient(90deg, #58326e, #8f4897, #7a3636), url(https://assets.ppy.sh/beatmaps/" + v.beatmap_id + "/covers/cover.jpg) no-repeat right !important; background-size: cover !important;'><img src='https://cdn.troke.id/static/ranking-icons/" + v.rank + ".png' class='score rank' alt='" + v.rank + "'> " +
-                    escapeHTML(v.body) + "<a href='https://datenshi.xyz/b/"+v.beatmap_id+"'>"+ escapeHTML(v.song_name) + "</a> <br />"
+                    escapeHTML(v.body) + "<a href='https://osu.ppy.sh/b/"+v.beatmap_id+"'>"+ escapeHTML(v.song_name) + "</a> <br />"
                 ),
                 $("<td style='background: linear-gradient(90deg, #7a3636, #7a3636, #7a3636), url(https://assets.ppy.sh/beatmaps/" + v.beatmap_id + "/covers/cover.jpg) no-repeat right !important; background-size: cover !important;'><time class='new timeago' datetime='" + v.time + "'>" + v.time + "</time></td>")
             ));
@@ -353,7 +354,7 @@ function loadScoresPage(type, mode) {
 		r.scores.forEach(function(v, idx){
 			scoreStore[v.id] = v;
 			var scoreRank = getRank(mode, v.mods, v.accuracy, v.count_300, v.count_100, v.count_50, v.count_miss);
-			var scoreRankIcon = "<img src='https://cdn.troke.id/static/ranking-icons/" + scoreRank + ".svg' class='score rank' alt='" + scoreRank + "'> ";
+			var scoreRankIcon = "<img src='https://cdn.troke.id/static/ranking-icons/" + scoreRank + ".png' class='score rank' alt='" + scoreRank + "'> ";
 			var rowColor = '';
 			if (v.completed < 2){
                                 var CROT = "#6b201f";
