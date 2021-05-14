@@ -693,7 +693,7 @@ function getScoreMods(m,f,p) {
 	}
 	if (nK) r.push(`${nK}K`);
 	else if (m & 33554432) r.push('DP');
-	if (m & 1048576) r.push(f ? 'FI' : 'SUD');
+	if (m & 1048576) r.push(f ? 'SUD' : 'FI');
 	if (m & 2097152) r.push('RAN');
 	if (m & 4194304) r.push('CIN');
 	if (r.length > 0) {
