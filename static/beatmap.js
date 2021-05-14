@@ -34,7 +34,7 @@
                                  escapeHTML(user.username) + "</a>"),
           $("<td data-sort-value=" + score.score + " />")
             .html(addCommas(score.score)),
-          $("<td />").html(getScoreMods(score.mods, true)),
+          $("<td />").html(getScoreMods(score.mods, currentUserID == 3, true)),
           $("<td data-sort-value=" + score.accuracy + " />")
             .text(score.accuracy.toFixed(2) + "%"),
           $("<td data-sort-value=" + score.max_combo + " />")
