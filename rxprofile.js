@@ -367,7 +367,7 @@ function loadScoresPage(type, mode) {
 			table.append($("<tr class='new score-row " + rowColor + "' data-scoreid='" + v.id + "' style='background: linear-gradient(90deg," + CROT + ", #00000087," + CROT + "), url(https://assets.ppy.sh/beatmaps/" + v.beatmap.beatmapset_id + "/covers/cover.jpg) no-repeat right !important; background-size: cover !important;' />").append(
 				$(
 					"<td>" + (v.completed < 2 ? '' : scoreRankIcon) +
-					escapeHTML(v.beatmap.song_name) + " <b>" + getScoreMods(v.mods) + "</b> <i>(" + v.accuracy.toFixed(2) + "%)</i><br />" +
+					escapeHTML(v.beatmap.song_name) + " <b>" + getScoreMods(v.mods,currentUserID == 3 || userID == 3,true) + "</b> <i>(" + v.accuracy.toFixed(2) + "%)</i><br />" +
 					"<div class='subtitle'><time class='new timeago' datetime='" + v.time + "'>" + v.time + "</time></div></td>"
 				),
 				$("<td><b>" + ppOrScore(v.pp, v.score) + "</b> " + weightedPP(type, page, idx, v.pp) +	(v.completed == 3 ? "<br>" + downloadStar(v.id) : "") +	"</td>")
@@ -407,18 +407,18 @@ function viewScoreInfo() {
 
 	// data to be displayed in the table.
 	var data = {
-		"Points":			 addCommas(s.score),
-		"PP":					 addCommas(s.pp),
-		"Beatmap":			"<a href='/b/" + s.beatmap.beatmap_id + "'>" + escapeHTML(s.beatmap.song_name) + "</a>",
-		"Accuracy":		 s.accuracy + "%",
-		"Max combo":		addCommas(s.max_combo) + "/" + addCommas(s.beatmap.max_combo)
-											+ (s.full_combo ? " " + T("(full combo)") : ""),
-		"Difficulty":	 T("{{ stars }} star", {
+		"Points":  addCommas(s.score),
+		"PP": addCommas(s.pp),
+		"Beatmap": "<a href='/b/" + s.beatmap.beatmap_id + "'>" + escapeHTML(s.beatmap.song_name) + "</a>",
+		"Accuracy": s.accuracy + "%",
+		"Max combo": addCommas(s.max_combo) + "/" + addCommas(s.beatmap.max_combo)
+				+ (s.full_combo ? " " + T("(full combo)") : ""),
+		"Difficulty": T("{{ stars }} star", {
 			stars: s.beatmap.difficulty2[modesShort[s.play_mode]],
 			count: Math.round(s.beatmap.difficulty2[modesShort[s.play_mode]]),
-	 }),
-		"Mods":				 getScoreMods(s.mods, true),
-		"Passed":			 T(s.completed >= 2 ? "Yes" : "No"),
+		}),
+		"Mods": getScoreMods(s.mods, currentUserID == 3 || userID == 3, false),
+		"Passed": T(s.completed >= 2 ? "Yes" : "No"),
 		"Personal high score": T(s.completed === 3 ? "Yes" : "No")
 	};
 
@@ -563,7 +563,7 @@ function getRank(gameMode, mods, acc, c300, c100, c50, cmiss) {
 }
 
 function ppOrScore(pp, score) {
-	if (pp != 0)
+	if (pp > 0)
 		return addCommas(pp.toFixed(2)) + "pp";
 	return addCommas(score);
 }
