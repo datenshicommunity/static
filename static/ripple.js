@@ -661,56 +661,47 @@ function addCommas(nStr) {
 }
 
 // helper functions copied from user.js in old-frontend
-function getScoreMods(m, noplus) {
+function getScoreMods(m,f,p) {
 	var r = [];
-  // has nc => remove dt
-  if ((m & 512) == 512)
-    m = m & ~64;
-  // has pf => remove sd
-  if ((m & 16384) == 16384)
-    m = m & ~32;
-  modsString.forEach(function(v, idx) {
-    var val = 1 << idx;
-    if ((m & val) > 0)
-      r.push(v);
-  });
+	if (m & 1) r.push('NF');
+	if (m & 2) r.push(f ? 'EM' : 'EZ');
+	if (m & 4) r.push('NV');
+	if (m & 8) r.push('HD');
+	if (m & 16) r.push('HR');
+	if (m & 16384) r.push('PF');
+	else if (m & 32) r.push('SD');
+	if (m & 512) r.push('NC');
+	else if (m & 64) r.push('DT');
+	if (m & 128) r.push(f ? 'RL' : 'RX');
+	else if (m & 8192) r.push('ATP');
+	if (m & 256) r.push('HT');
+	if (m & 1024) r.push('FL');
+	if (m & 2048) r.push('Auto');
+	if (m & 4096) r.push('SO');
+	let nK = 0;
+	if (m & (67108864 | 268435456 | 134217728 | 32768 | 65536 | 131072 | 262144 | 524288 | 16777216 | 33554432)) {
+		if (m & 67108864) nK = 1;
+		else if (m & 268435456) nK = 2;
+		else if (m & 134217728) nK = 3;
+		else if (m & 32768) nK = 4;
+		else if (m & 65536) nK = 5;
+		else if (m & 131072) nK = 6;
+		else if (m & 262144) nK = 7;
+		else if (m & 524288) nK = 8;
+		else if (m & 16777216) nK = 9;
+		if (m & 33554432) nK *= 2;
+	}
+	if (nK) r.push(`${nK}K`);
+	else if (m & 33554432) r.push('DP');
+	if (m & 1048576) r.push(f ? 'FI' : 'SUD');
+	if (m & 2097152) r.push('RAN');
+	if (m & 4194304) r.push('CIN');
 	if (r.length > 0) {
-		return (noplus ? "" : "+ ") + r.join(", ");
+		return (p ? "+ " : '') + r.join(', ');
 	} else {
-		return (noplus ? T('None') : '');
+		return '';
 	}
 }
-
-var modsString = [
-  "NF",
-	"EZ",
-	"NV",
-	"HD",
-	"HR",
-	"SD",
-	"DT",
-	"RX",
-	"HT",
-	"NC",
-	"FL",
-	"AU", // Auto.
-	"SO",
-	"AP", // Autopilot.
-	"PF",
-	"K4",
-	"K5",
-	"K6",
-	"K7",
-	"K8",
-	"K9",
-	"RN", // Random
-	"LM", // LastMod. Cinema?
-	"K9",
-	"K0",
-	"K1",
-	"K3",
-	"K2",
-];
 
 // time format (seconds -> hh:mm:ss notation)
 function timeFormat(t) {
